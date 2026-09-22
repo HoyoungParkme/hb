@@ -2,7 +2,7 @@
 doc_id: HB-MS-002
 type: MS
 title: MINISPEC — ClassifyService
-status: draft
+status: approved
 upstream: [HB-DOM-002, HB-SEQ-001, HB-API-001]
 ---
 
