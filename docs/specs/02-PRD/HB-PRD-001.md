@@ -2,7 +2,7 @@
 doc_id: HB-PRD-001
 type: PRD
 title: 가계부 자동 분류 — 제품 요구
-status: draft
+status: approved
 upstream: [HB-RFQ-001]
 ---
 
