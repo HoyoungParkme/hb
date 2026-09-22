@@ -2,7 +2,7 @@
 doc_id: HB-INFRA-001
 type: INFRA
 title: 가계부 자동 분류 — 인프라 아키텍처
-status: draft
+status: approved
 upstream: [HB-PRD-001, HB-UC-001]
 ---
 
