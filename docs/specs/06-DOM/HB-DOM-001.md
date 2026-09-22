@@ -2,7 +2,7 @@
 doc_id: HB-DOM-001
 type: DOM
 title: 가계부 자동 분류 — 도메인 모델
-status: draft
+status: approved
 upstream: [HB-PRD-001, HB-UC-001, HB-INFRA-001]
 ---
 
