@@ -2,7 +2,7 @@
 doc_id: HB-MS-005
 type: MS
 title: MINISPEC — CsvReader
-status: draft
+status: approved
 upstream: [HB-DOM-002, HB-SEQ-001]
 ---
 
