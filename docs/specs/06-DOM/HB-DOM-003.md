@@ -2,7 +2,7 @@
 doc_id: HB-DOM-003
 type: DOM
 title: 가계부 자동 분류 — ERD·DD
-status: draft
+status: approved
 upstream: [HB-DOM-001, HB-DOM-002, HB-INFRA-001]
 ---
 
