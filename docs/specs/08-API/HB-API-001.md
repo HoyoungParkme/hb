@@ -2,7 +2,7 @@
 doc_id: HB-API-001
 type: API
 title: 가계부 자동 분류 — REST API
-status: draft
+status: approved
 upstream: [HB-UC-001, HB-DOM-001, HB-UI-001]
 ---
 
