@@ -2,7 +2,7 @@
 doc_id: HB-UC-001
 type: UC
 title: 가계부 자동 분류 — 유스케이스
-status: draft
+status: approved
 upstream: [HB-PRD-001, HB-SCN-001]
 ---
 
