@@ -2,7 +2,7 @@
 doc_id: HB-UI-001
 type: UI
 title: 가계부 자동 분류 — 화면 설계·와이어프레임
-status: draft
+status: approved
 upstream: [HB-UC-001, HB-DOM-001]
 ---
 
