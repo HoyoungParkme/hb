@@ -2,7 +2,7 @@
 doc_id: HB-DOM-002
 type: DOM
 title: 가계부 자동 분류 — 클래스 명세
-status: draft
+status: approved
 upstream: [HB-DOM-001, HB-API-001, HB-INFRA-001]
 ---
 
