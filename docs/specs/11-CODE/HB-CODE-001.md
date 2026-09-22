@@ -2,7 +2,7 @@
 doc_id: HB-CODE-001
 type: CODE
 title: 가계부 자동 분류 — 구현 계획
-status: draft
+status: approved
 upstream: [HB-MS-001, HB-MS-002, HB-MS-003, HB-MS-004, HB-MS-005, HB-SEQ-001, HB-DOM-003]
 ---
 
