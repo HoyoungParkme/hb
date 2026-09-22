@@ -24,7 +24,7 @@ SQLite 파일 하나([[HB-INFRA-001#C2]]) 안의 테이블. 클래스 명세([[H
 | [[HB-DOM-001#MonthlySummary]] | — | 계산 결과 |
 | 스키마 버전 | schema_version | 예(마이그레이션용) |
 
-## 2. 개념 모델
+## 2. ERD
 
 ```mermaid
 erDiagram
@@ -63,7 +63,7 @@ erDiagram
     }
 ```
 
-## 3. 개념별 정리
+## 3. DD (데이터 사전)
 
 #### transactions 거래
 
@@ -80,7 +80,7 @@ erDiagram
 | fingerprint | TEXT | NOT NULL UNIQUE | sha256 hex |
 | batch_id | INTEGER | FK import_batches(id) | — |
 
-인덱스: `(occurred_at)` 월 조회 · `(merchant, confirmed)` 재분류 · `(category, occurred_at)` 항목 필터. 근거: [[HB-PRD-001#R2]](UNIQUE fingerprint) · [[HB-PRD-001#R4]](confirmed).
+근거: [[HB-PRD-001#R2]](UNIQUE fingerprint) · [[HB-PRD-001#R4]](confirmed).
 
 #### rules 분류 규칙
 
@@ -114,11 +114,23 @@ merchant가 PK이므로 exact와 contains가 같은 문자열을 가질 수 없�
 
 기동 시 최대 version보다 큰 마이그레이션을 순서대로 적용한다([[HB-INFRA-001#C3]]의 업그레이드).
 
-## 4. 경계
+## 4. 인덱스
+
+| 테이블 | 인덱스 | 컬럼 | 쓰는 조회 |
+|---|---|---|---|
+| transactions | ux_transactions_fingerprint | fingerprint (UNIQUE) | 중복 배제 [[HB-PRD-001#R2]] |
+| transactions | ix_transactions_occurred | occurred_at | 월 요약 [[HB-API-001#GET/api/months/{ym}]] |
+| transactions | ix_transactions_merchant | merchant, confirmed | 규칙 변경 시 재분류 [[HB-DOM-002#RuleService]] |
+| transactions | ix_transactions_category | category, occurred_at | 항목 필터·미분류 집계 |
+| import_batches | ix_batches_imported | imported_at | 최근 가져오기 목록 |
+
+rules는 PK(merchant)로 충분하다. 규모([[HB-RFQ-001#Q1]]의 연 4천 건)에서 이 이상은 필요 없다.
+
+## 5. 경계
 
 - 항목 코드는 FK가 아니라 문자열이다. 항목이 코드 상수이므로 DB가 검증하지 않는다 — 서비스가 막는다([[HB-DOM-002#RuleService]]).
 - 파일 원본은 저장하지 않는다([[HB-INFRA-001#C2]]의 표).
 
-## 5. 미결사항
+## 6. 미결사항
 
 - [ ] occurred_at에 시각까지 넣을지(은행은 시각이 있고 카드는 날짜만) — 첫 버전은 날짜만
