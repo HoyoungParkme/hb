@@ -2,7 +2,7 @@
 doc_id: HB-MS-004
 type: MS
 title: MINISPEC — SummaryService
-status: draft
+status: approved
 upstream: [HB-DOM-002, HB-SEQ-001, HB-API-001]
 ---
 
