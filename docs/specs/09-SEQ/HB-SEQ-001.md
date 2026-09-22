@@ -2,7 +2,7 @@
 doc_id: HB-SEQ-001
 type: SEQ
 title: 가계부 자동 분류 — 시퀀스
-status: draft
+status: approved
 upstream: [HB-UC-001, HB-API-001, HB-DOM-001]
 ---
 
