@@ -2,7 +2,7 @@
 doc_id: HB-MS-003
 type: MS
 title: MINISPEC — RuleService
-status: draft
+status: approved
 upstream: [HB-DOM-002, HB-SEQ-001, HB-API-001]
 ---
 
