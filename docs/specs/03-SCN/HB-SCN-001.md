@@ -2,7 +2,7 @@
 doc_id: HB-SCN-001
 type: SCN
 title: 가계부 자동 분류 — 사용자 시나리오
-status: draft
+status: approved
 upstream: [HB-PRD-001]
 ---
 
