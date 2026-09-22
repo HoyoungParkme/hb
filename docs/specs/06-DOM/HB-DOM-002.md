@@ -12,7 +12,9 @@ upstream: [HB-DOM-001, HB-API-001, HB-INFRA-001]
 
 도메인 모델([[HB-DOM-001#Transaction]] 등)을 코드로 옮길 때의 클래스와 그 공개 메서드. API([[HB-API-001#POST/api/imports]] 등)가 확정된 뒤에 쓴다. 메서드 하나하나의 처리는 10단계 MINISPEC이 맡는다 — 여기서는 시그니처와 책임·의존만. 절 하나가 파일 하나다([[HB-INFRA-001#C2]]의 내부 구조).
 
-## 1. 개념 식별
+## 1. 폴더 구조
+
+절 하나가 파일 하나. 층은 [[HB-INFRA-001#C2]]의 내부 구조(web → service → domain/infra)를 따른다.
 
 | 클래스 | 파일 | 층 | 개념 |
 |---|---|---|---|
@@ -24,7 +26,15 @@ upstream: [HB-DOM-001, HB-API-001, HB-INFRA-001]
 | CsvReader | `hb/infra/csv_reader.py` | infra | 파일 읽기 |
 | Repository | `hb/infra/repo.py` | infra | SQLite 접근 |
 
-## 2. 개념 모델
+## 2. 엔티티
+
+`hb/domain/models.py`의 dataclass. 속성은 [[HB-DOM-001#Transaction]] · [[HB-DOM-001#Rule]] · [[HB-DOM-001#Category]] · [[HB-DOM-001#ImportProfile]] · [[HB-DOM-001#ImportBatch]] · [[HB-DOM-001#MonthlySummary]] 그대로이며 메서드는 아래 하나뿐이다.
+
+#### Transaction 거래 (도메인 dataclass)
+
+`from_row(row: RawRow, source: str, normalize) -> Transaction` 클래스 메서드 하나. fingerprint = sha256(`f"{source}|{occurred_at}|{amount}|{raw_memo}"`). 나머지 속성은 [[HB-DOM-001#Transaction]] 그대로.
+
+## 3. 설계 클래스
 
 ```mermaid
 classDiagram
@@ -76,8 +86,6 @@ classDiagram
     SummaryService --> Repository
 ```
 
-## 3. 개념별 정리
-
 #### ImportService 가져오기 서비스
 
 책임: 파일 바이트 → 거래 저장까지 한 흐름(9단계 SEQ-1에서 그린다). 의존: CsvReader · ClassifyService · Repository. 상태 없음. 라우터 [[HB-API-001#POST/api/imports]] · [[HB-API-001#GET/api/imports]]가 부른다.
@@ -102,11 +110,18 @@ classDiagram
 
 책임: SQLite 접근 전부. SQL은 여기에만 있다. `transaction()`은 컨텍스트 매니저로 BEGIN/COMMIT/ROLLBACK. 테이블은 ERD(HB-DOM-003, 뒤에)에서 정한다. 의존: 표준 `sqlite3`.
 
-#### Transaction 거래 (도메인 dataclass)
+## 4. 의존 관계
 
-`from_row(row: RawRow, source: str, normalize) -> Transaction` 클래스 메서드 하나. fingerprint = sha256(`f"{source}|{occurred_at}|{amount}|{raw_memo}"`). 나머지 속성은 [[HB-DOM-001#Transaction]] 그대로.
+```mermaid
+flowchart LR
+    web[web 라우터] --> ImportService & ClassifyService & RuleService & SummaryService
+    ImportService --> CsvReader & ClassifyService & Repository
+    ClassifyService --> RuleService & Repository
+    RuleService --> Repository
+    SummaryService --> Repository
+    Repository --> sqlite[(sqlite3)]
+```
 
-## 4. 경계
 
 - 라우터(`hb/web/`)는 클래스가 아니라 함수 모음이다. 요청을 풀고 서비스를 부르고 예외를 HTTP 코드로 바꾸는 것만 한다([[HB-API-001#POST/api/imports]]의 400 등).
 - 서비스는 서로 Repository를 공유한다(생성자 주입). 서비스끼리 직접 부르는 것은 ImportService → ClassifyService, ClassifyService → RuleService 둘뿐.
